@@ -50,5 +50,14 @@
     "moisture_weight": 0.1,
     "organization_weight": 0.05,
     "persistence_weight": 0.05
+  },
+  "llm_verification": {
+    "enabled": false,
+    "provider": "mock",
+    "model_name": "llama-3.2-11b-vision-preview",
+    "gate_threshold": 0.50,
+    "confidence_threshold": 0.70,
+    "timeout_seconds": 15,
+    "max_retries": 2
   }
 }

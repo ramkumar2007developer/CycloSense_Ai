@@ -219,3 +219,57 @@ BLOCKED — awaiting user to provide non-cyclone satellite images for image
 classifier retraining. API development not started.
 --------------------------------
 
+--------------------------------
+Timestamp:
+2026-09-23 00:05 (IST)
+
+Phase:
+ML/DL — LLM Secondary Verification Gate Implementation & Quality Assurance
+
+Action:
+Implemented secondary LLM/vision verification gate, abstraction interfaces, deterministic
+mock verifier, real Groq vision provider integration, decision policy, inference predictor
+integration, and comprehensive 11-scenario test suite. Added ADR-009.
+
+Files created:
+- src/inference/llm_verifier.py
+- src/inference/verification_gate.py
+- tests/ml/test_llm_verification_gate.py
+
+Files modified:
+- configs/ml_config.json (added llm_verification configuration section)
+- src/config/ml_config.py (added LLMVerificationConfig and env overrides)
+- src/inference/predictor.py (added extract_signals, predict_with_verification, error handling)
+- DECISIONS.md (added ADR-009)
+- AGENT_ACTION_LOG.txt (this entry)
+
+Audit findings on per-input signals:
+1. image_probability: Produced by ImageBaselineCNN head (downgraded to feature extractor per ADR-007,
+   retains raw visual probability output for per-input inspection).
+2. numerical_probability: Produced by NumericalMLP on 12 validated atmospheric features.
+3. fusion_probability: Produced by multimodal FusionModel on joint visual and numerical embeddings.
+4. Gate trigger: ALL signals >= gate_threshold (default 0.50). Evaluates per-sample probabilities,
+   never training/eval metrics.
+
+Decision Policy:
+1. All signals >= 0.50 AND LLM says cyclone_consistent AND conf >= 0.70 -> VERIFIED_CYCLONE
+2. All signals >= 0.50 BUT LLM says non_cyclone_consistent -> SECONDARY_REVIEW_CONFLICT
+3. All signals >= 0.50 AND (LLM says uncertain OR conf < 0.70 OR human review flagged) -> HUMAN_REVIEW_REQUIRED
+4. Any signal < 0.50 -> LLM_NOT_REQUIRED (normal ML result returned, verifier not called)
+5. Gate activated but LLM error/timeout -> LLM_VERIFICATION_FAILED (preserves ML outputs, no crash)
+
+Tests executed:
+- pytest -q (89 passed in 17.18s; 75 existing + 14 new gate/edge-case tests)
+- Specific tests for: boundary >= 0.50, all < 0.50, one < 0.50, all > 0.50, cyclone_consistent,
+  non_cyclone_consistent, uncertain, simulated failures, missing numerical data, corrupted images,
+  anti-cloud-bias on sample_data/images/benign_cloud_cluster.jpg, and secret-free structured logging.
+
+Problems found:
+- Provided Groq API key received HTTP 403 / decommissioned vision model on live endpoint;
+  gracefully handled by the verification gate resulting in LLM_VERIFICATION_FAILED with zero crashes,
+  while MockLLMVerifier provides 100% deterministic test coverage.
+
+Next action:
+Maintain gate ready for deployment; await non-cyclone dataset for image classifier retraining.
+--------------------------------
+

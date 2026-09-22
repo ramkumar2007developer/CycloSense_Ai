@@ -87,3 +87,22 @@ This document records the architectural and scientific design decisions made in 
   - Both models are evaluated with precision, recall, F1, and AUC-ROC on the held-out test partition.
 - **Consequences:** Two of the three planned models (numerical-only, fusion) can proceed without negative image data. The image binary classifier remains pending until negative data is available.
 
+---
+
+## ADR-009: Secondary LLM Vision Verification Gate and Decision Policy
+- **Status:** Accepted
+- **Date:** 2026-09-23
+- **Context:** While the multimodal ML models output probabilities, empirical anti-bias probes revealed potential false positives on benign cloud formations (e.g. high cirrus bands, scattered cumulus, or non-rotating thunderstorms). A secondary visual verification layer is required before high-risk alerts are confirmed.
+- **Decision:**
+  - Introduce an automated, per-input secondary verification gate evaluated on every inference:
+    `Gate Trigger: image_probability >= 0.50 AND numerical_probability >= 0.50 AND fusion_probability >= 0.50`
+  - When all three per-input signals are $\ge 0.50$, the satellite image, model probabilities, and environmental context are presented to an LLM Vision Verifier (`LLMVisionVerifier`).
+  - Strict anti-cloud bias prompting instructs the LLM: `"Do not assume that clouds indicate a cyclone. Normal scattered clouds, cirrus, dense cloud formations, convection, and other non-cyclonic atmospheric patterns can occur without a cyclone."`
+  - The LLM does NOT silently override the ML model. The final status follows an explicit, documented policy:
+    1. `VERIFIED_CYCLONE`: All signals $\ge 0.50$ AND LLM says `cyclone_consistent` AND confidence $\ge$ threshold (0.70).
+    2. `SECONDARY_REVIEW_CONFLICT`: All signals $\ge 0.50$ BUT LLM says `non_cyclone_consistent` (flags false positives without forcing cyclone classification).
+    3. `HUMAN_REVIEW_REQUIRED`: All signals $\ge 0.50$ AND (LLM says `uncertain` OR confidence $<$ threshold OR human review flagged).
+    4. `LLM_NOT_REQUIRED`: Any signal $< 0.50$ (gate does not activate; normal ML result returned).
+    5. `LLM_VERIFICATION_FAILED`: Gate activated but verifier encountered timeout, network error, or invalid response. System does not crash; original ML predictions are preserved.
+- **Consequences:** Eliminates silent overrides, protects against cloud false positives, preserves full audit logging, and maintains complete testability with deterministic mocks when external credentials are not present.
+
