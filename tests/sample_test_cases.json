@@ -1,0 +1,302 @@
+[
+  {
+    "id": "TC-01",
+    "name": "Rapidly Intensifying Tropical Cyclone",
+    "description": "High sea surface temperatures, strong visual spiral bands, high moisture, and high rotation with minimal vertical wind shear.",
+    "category": "High Risk / Active Cyclone",
+    "visual_probability": [
+      0.05,
+      0.95
+    ],
+    "environmental_features": {
+      "temperature_c": 28.5,
+      "sea_surface_temperature_c": 30.5,
+      "relative_humidity_pct": 88.0,
+      "water_vapour_gkg": 22.0,
+      "surface_pressure_hpa": 975.0,
+      "wind_speed_ms": 42.0,
+      "wind_direction_deg": 120.0,
+      "vertical_wind_shear_ms": 4.5,
+      "cloud_organization_index": 0.92,
+      "convection_index": 0.88,
+      "rotation_index": 0.85,
+      "persistence_index": 0.9
+    },
+    "expected_classification": "cyclone",
+    "expected_risk_range": [
+      80.0,
+      100.0
+    ],
+    "sample_image_path": "sample_data/images/insat_cyclone_101.jpg"
+  },
+  {
+    "id": "TC-02",
+    "name": "Fair Weather / Calm Open Ocean",
+    "description": "Clear skies or scattered shallow cumulus, dry mid-level air, and absence of vorticity or convective banding.",
+    "category": "Low Risk / Clear Sky",
+    "visual_probability": [
+      0.98,
+      0.02
+    ],
+    "environmental_features": {
+      "temperature_c": 25.0,
+      "sea_surface_temperature_c": 26.0,
+      "relative_humidity_pct": 35.0,
+      "water_vapour_gkg": 10.0,
+      "surface_pressure_hpa": 1016.0,
+      "wind_speed_ms": 6.0,
+      "wind_direction_deg": 45.0,
+      "vertical_wind_shear_ms": 12.0,
+      "cloud_organization_index": 0.05,
+      "convection_index": 0.08,
+      "rotation_index": 0.02,
+      "persistence_index": 0.05
+    },
+    "expected_classification": "non_cyclone",
+    "expected_risk_range": [
+      0.0,
+      15.0
+    ],
+    "sample_image_path": "sample_data/images/clear_sky_ocean.jpg"
+  },
+  {
+    "id": "TC-03",
+    "name": "Benign Tropical Cloud Cluster (Anti-Bias Check)",
+    "description": "Dense high cirrus and localized thunderstorms, but completely unorganized with zero rotation and hostile high shear.",
+    "category": "Anti-Bias / Non-Cyclonic Convection",
+    "visual_probability": [
+      0.7,
+      0.3
+    ],
+    "environmental_features": {
+      "temperature_c": 27.0,
+      "sea_surface_temperature_c": 28.0,
+      "relative_humidity_pct": 75.0,
+      "water_vapour_gkg": 18.0,
+      "surface_pressure_hpa": 1010.0,
+      "wind_speed_ms": 10.0,
+      "wind_direction_deg": 210.0,
+      "vertical_wind_shear_ms": 28.0,
+      "cloud_organization_index": 0.15,
+      "convection_index": 0.6,
+      "rotation_index": 0.05,
+      "persistence_index": 0.15
+    },
+    "expected_classification": "non_cyclone",
+    "expected_risk_range": [
+      15.0,
+      45.0
+    ],
+    "sample_image_path": "sample_data/images/benign_cloud_cluster.jpg"
+  },
+  {
+    "id": "TC-04",
+    "name": "Shear-Torn Tropical Disturbance",
+    "description": "Warm ocean waters and moisture present, but severe vertical wind shear (>25 m/s) displaces convection from low-level circulation.",
+    "category": "Suppressed Development",
+    "visual_probability": [
+      0.6,
+      0.4
+    ],
+    "environmental_features": {
+      "temperature_c": 28.0,
+      "sea_surface_temperature_c": 29.5,
+      "relative_humidity_pct": 80.0,
+      "water_vapour_gkg": 19.5,
+      "surface_pressure_hpa": 1004.0,
+      "wind_speed_ms": 18.0,
+      "wind_direction_deg": 180.0,
+      "vertical_wind_shear_ms": 35.0,
+      "cloud_organization_index": 0.35,
+      "convection_index": 0.45,
+      "rotation_index": 0.25,
+      "persistence_index": 0.3
+    },
+    "expected_classification": "non_cyclone",
+    "expected_risk_range": [
+      25.0,
+      50.0
+    ],
+    "sample_image_path": "sample_data/images/shear_disorganized_band.jpg"
+  },
+  {
+    "id": "TC-05",
+    "name": "Dry Air Intrusion into Disturbance",
+    "description": "Organized cloud canopy encountering extremely dry Saharan/continental air (RH < 25%), choking latent heat release.",
+    "category": "Suppressed Development",
+    "visual_probability": [
+      0.45,
+      0.55
+    ],
+    "environmental_features": {
+      "temperature_c": 27.5,
+      "sea_surface_temperature_c": 28.8,
+      "relative_humidity_pct": 22.0,
+      "water_vapour_gkg": 8.0,
+      "surface_pressure_hpa": 1002.0,
+      "wind_speed_ms": 20.0,
+      "wind_direction_deg": 90.0,
+      "vertical_wind_shear_ms": 10.0,
+      "cloud_organization_index": 0.55,
+      "convection_index": 0.25,
+      "rotation_index": 0.45,
+      "persistence_index": 0.35
+    },
+    "expected_classification": "cyclone",
+    "expected_risk_range": [
+      35.0,
+      60.0
+    ],
+    "sample_image_path": "sample_data/images/insat_cyclone_106.jpg"
+  },
+  {
+    "id": "TC-06",
+    "name": "Developing Tropical Depression",
+    "description": "Closed surface isobar, falling central pressure (998 hPa), building moisture, consolidating central dense overcast.",
+    "category": "Emerging System / Medium-High Risk",
+    "visual_probability": [
+      0.35,
+      0.65
+    ],
+    "environmental_features": {
+      "temperature_c": 28.0,
+      "sea_surface_temperature_c": 29.2,
+      "relative_humidity_pct": 82.0,
+      "water_vapour_gkg": 20.5,
+      "surface_pressure_hpa": 998.0,
+      "wind_speed_ms": 22.0,
+      "wind_direction_deg": 140.0,
+      "vertical_wind_shear_ms": 7.0,
+      "cloud_organization_index": 0.65,
+      "convection_index": 0.7,
+      "rotation_index": 0.55,
+      "persistence_index": 0.6
+    },
+    "expected_classification": "cyclone",
+    "expected_risk_range": [
+      55.0,
+      75.0
+    ],
+    "sample_image_path": "sample_data/images/insat_cyclone_111.jpg"
+  },
+  {
+    "id": "TC-07",
+    "name": "Mature Severe Cyclonic Storm",
+    "description": "Distinct eye feature, compact symmetrical eyewall, deep convection, minimal central pressure (955 hPa), destructive winds.",
+    "category": "Critical Risk / Severe Cyclone",
+    "visual_probability": [
+      0.01,
+      0.99
+    ],
+    "environmental_features": {
+      "temperature_c": 29.0,
+      "sea_surface_temperature_c": 31.0,
+      "relative_humidity_pct": 92.0,
+      "water_vapour_gkg": 24.0,
+      "surface_pressure_hpa": 955.0,
+      "wind_speed_ms": 55.0,
+      "wind_direction_deg": 160.0,
+      "vertical_wind_shear_ms": 3.0,
+      "cloud_organization_index": 0.98,
+      "convection_index": 0.95,
+      "rotation_index": 0.96,
+      "persistence_index": 0.95
+    },
+    "expected_classification": "cyclone",
+    "expected_risk_range": [
+      85.0,
+      100.0
+    ],
+    "sample_image_path": "sample_data/images/insat_cyclone_112.jpg"
+  },
+  {
+    "id": "TC-08",
+    "name": "Marginal Subtropical System",
+    "description": "Borderline ocean temperatures (26.2\u00b0C), broad disorganized wind field, moderate upper-level divergence.",
+    "category": "Moderate Risk / Marginal",
+    "visual_probability": [
+      0.52,
+      0.48
+    ],
+    "environmental_features": {
+      "temperature_c": 24.5,
+      "sea_surface_temperature_c": 26.2,
+      "relative_humidity_pct": 68.0,
+      "water_vapour_gkg": 15.0,
+      "surface_pressure_hpa": 1008.0,
+      "wind_speed_ms": 16.0,
+      "wind_direction_deg": 280.0,
+      "vertical_wind_shear_ms": 14.0,
+      "cloud_organization_index": 0.4,
+      "convection_index": 0.4,
+      "rotation_index": 0.35,
+      "persistence_index": 0.4
+    },
+    "expected_classification": "non_cyclone",
+    "expected_risk_range": [
+      35.0,
+      55.0
+    ],
+    "sample_image_path": "sample_data/images/shear_disorganized_band.jpg"
+  },
+  {
+    "id": "TC-09",
+    "name": "Monsoon Trough Low Pressure Area",
+    "description": "Widespread monsoon rainfall and low pressure without tightly closed cyclonic circulation or defined core.",
+    "category": "Moderate Risk / Monsoon Low",
+    "visual_probability": [
+      0.58,
+      0.42
+    ],
+    "environmental_features": {
+      "temperature_c": 27.5,
+      "sea_surface_temperature_c": 28.5,
+      "relative_humidity_pct": 85.0,
+      "water_vapour_gkg": 21.0,
+      "surface_pressure_hpa": 1002.0,
+      "wind_speed_ms": 14.0,
+      "wind_direction_deg": 230.0,
+      "vertical_wind_shear_ms": 16.0,
+      "cloud_organization_index": 0.45,
+      "convection_index": 0.65,
+      "rotation_index": 0.25,
+      "persistence_index": 0.5
+    },
+    "expected_classification": "non_cyclone",
+    "expected_risk_range": [
+      40.0,
+      60.0
+    ],
+    "sample_image_path": "sample_data/images/benign_cloud_cluster.jpg"
+  },
+  {
+    "id": "TC-10",
+    "name": "Extratropical Transition / Cold Core Post-Tropical",
+    "description": "Former cyclone moving over colder waters (<24\u00b0C), interacting with mid-latitude baroclinic zone with asymmetric frontal clouds.",
+    "category": "Transitioning System",
+    "visual_probability": [
+      0.65,
+      0.35
+    ],
+    "environmental_features": {
+      "temperature_c": 21.0,
+      "sea_surface_temperature_c": 23.5,
+      "relative_humidity_pct": 60.0,
+      "water_vapour_gkg": 12.0,
+      "surface_pressure_hpa": 995.0,
+      "wind_speed_ms": 28.0,
+      "wind_direction_deg": 310.0,
+      "vertical_wind_shear_ms": 25.0,
+      "cloud_organization_index": 0.4,
+      "convection_index": 0.3,
+      "rotation_index": 0.4,
+      "persistence_index": 0.3
+    },
+    "expected_classification": "non_cyclone",
+    "expected_risk_range": [
+      25.0,
+      48.0
+    ],
+    "sample_image_path": "sample_data/images/clear_sky_ocean.jpg"
+  }
+]

@@ -1,0 +1,54 @@
+{
+  "data_source_tag": "synthetic_mvp",
+  "external_data_root": null,
+  "paths": {
+    "insat_image_dir": "archive/insat3d_ir_cyclone_ds/CYCLONE_DATASET_INFRARED",
+    "insat_label_csv": "insat_3d_ds - Sheet.csv",
+    "environmental_csv": "cyclosense_mvp_environmental_dataset.csv"
+  },
+  "image": {
+    "size": 224,
+    "normalize_mean": [0.485, 0.456, 0.406],
+    "normalize_std": [0.229, 0.224, 0.225],
+    "augment_train": true
+  },
+  "numerical": {
+    "feature_columns": [
+      "temperature_c",
+      "sea_surface_temperature_c",
+      "relative_humidity_pct",
+      "water_vapour_gkg",
+      "surface_pressure_hpa",
+      "wind_speed_ms",
+      "wind_direction_deg",
+      "vertical_wind_shear_ms",
+      "cloud_organization_index",
+      "convection_index",
+      "rotation_index",
+      "persistence_index"
+    ],
+    "label_column": "cyclone_label",
+    "group_column": "storm_id"
+  },
+  "splitting": {
+    "train_ratio": 0.7,
+    "val_ratio": 0.15,
+    "test_ratio": 0.15,
+    "seed": 42
+  },
+  "training": {
+    "seed": 42,
+    "batch_size": 16,
+    "epochs": 3,
+    "learning_rate": 0.001,
+    "num_workers": 0
+  },
+  "scoring": {
+    "visual_weight": 0.4,
+    "environmental_weight": 0.3,
+    "convection_weight": 0.1,
+    "moisture_weight": 0.1,
+    "organization_weight": 0.05,
+    "persistence_weight": 0.05
+  }
+}
