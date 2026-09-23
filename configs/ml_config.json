@@ -59,5 +59,12 @@
     "confidence_threshold": 0.70,
     "timeout_seconds": 15,
     "max_retries": 2
+  },
+  "llm_explanation": {
+    "enabled": true,
+    "provider": "mock",
+    "model_name": "llama-3.3-70b-versatile",
+    "timeout_seconds": 15,
+    "max_retries": 2
   }
 }

@@ -106,3 +106,18 @@ This document records the architectural and scientific design decisions made in 
     5. `LLM_VERIFICATION_FAILED`: Gate activated but verifier encountered timeout, network error, or invalid response. System does not crash; original ML predictions are preserved.
 - **Consequences:** Eliminates silent overrides, protects against cloud false positives, preserves full audit logging, and maintains complete testability with deterministic mocks when external credentials are not present.
 
+---
+
+## ADR-010: LLM Synthesis and Meteorological Explanation Generation
+- **Status:** Accepted
+- **Date:** 2026-09-23
+- **Context:** Quantitative prediction matrices (probabilities, risk index 0–100, component weights, atmospheric indices) require actionable synthesis into natural language for operational triage and meteorological interpretation.
+- **Decision:**
+  - Introduce an `LLMExplainer` module to evaluate the complete matrix of predictions, environmental conditions, and verification results.
+  - The explainer explicitly handles two distinct operational scenarios:
+    1. **Case A (High Risk / Signals $\ge 50\%$ / Verification Triggered)**: Synthesizes visual spiral/eye features, numerical probabilities, and environmental parameters into a comprehensive verification rationale (`VERIFIED_CYCLONE`, `SECONDARY_REVIEW_CONFLICT`, or `HUMAN_REVIEW_REQUIRED`).
+    2. **Case B (Other Case / Signals $< 50\%$ / Suppressed or Low Risk)**: Synthesizes atmospheric barriers (e.g. vertical wind shear, dry air, low SST, lack of rotation) explaining why development is suppressed and why verification was not required.
+  - Return format is structured JSON containing: `summary`, `meteorological_rationale`, `primary_drivers`, `inhibiting_factors`, `operational_guidance`, and `case_type`.
+  - On LLM failure or timeout, the explainer safely falls back to a deterministic, rule-based template without crashing the inference pipeline.
+- **Consequences:** Provides interpretable, transparent, and auditable reasoning for both high-risk and fair-weather/suppressed cases without altering underlying model weights or probabilities.
+

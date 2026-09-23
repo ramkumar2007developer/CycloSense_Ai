@@ -12,6 +12,7 @@ import torch
 from src.config.ml_config import MLConfig, load_ml_config
 from src.data.image_pipeline import build_image_transforms, preprocess_image
 from src.data.numerical_pipeline import build_numerical_pipeline
+from src.inference.llm_explainer import LLMExplainer, build_explainer
 from src.inference.llm_verifier import LLMVisionVerifier, build_vision_verifier
 from src.inference.verification_gate import (
     GateSignals,
@@ -94,8 +95,14 @@ class CycloSensePredictor:
         env_row: pd.Series,
         verify: bool = False,
         verifier: LLMVisionVerifier | None = None,
+        explain: bool = False,
+        explainer: LLMExplainer | None = None,
     ) -> dict[str, object]:
-        """Predict cyclone risk. If verify is True, includes LLM verification gate."""
+        """Predict cyclone risk. Supports optional verification gate and LLM explanation."""
+        if explain:
+            return self.predict_with_explanation(
+                image_path, env_row, verifier=verifier, explainer=explainer
+            )
         if verify or self.config.llm_verification.enabled:
             return self.predict_with_verification(image_path, env_row, verifier=verifier)
 
@@ -152,4 +159,23 @@ class CycloSensePredictor:
 
         output: dict[str, object] = dict(risk_dict)
         output.update(gate_res.as_dict())
+        return output
+
+    @torch.no_grad()
+    def predict_with_explanation(
+        self,
+        image_path: Path,
+        env_row: pd.Series,
+        verifier: LLMVisionVerifier | None = None,
+        explainer: LLMExplainer | None = None,
+        image_id: str | None = None,
+    ) -> dict[str, object]:
+        """Run ML prediction, verification gate, and generate structured meteorological explanation."""
+        output = self.predict_with_verification(image_path, env_row, verifier=verifier, image_id=image_id)
+        row_dict = env_row.to_dict() if hasattr(env_row, "to_dict") else dict(env_row)
+        env_dict = {col: float(row_dict[col]) for col in self.num_pipe.feature_columns if col in row_dict}
+
+        actual_explainer = explainer or build_explainer(self.config.llm_explanation)
+        explanation = actual_explainer.generate_explanation(output, env_dict)
+        output["llm_explanation"] = explanation.as_dict()
         return output

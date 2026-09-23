@@ -273,3 +273,48 @@ Next action:
 Maintain gate ready for deployment; await non-cyclone dataset for image classifier retraining.
 --------------------------------
 
+--------------------------------
+Timestamp:
+2026-09-23 09:55 (IST)
+
+Phase:
+ML/DL — LLM Meteorological Explanation Generator (Case A & Case B)
+
+Action:
+Implemented LLM Explanation Generator to synthesize prediction matrices into human-readable
+meteorological rationales. Covers both Case A (signals >= 50%, verification triggered) and
+Case B (signals < 50%, cyclogenesis suppressed / verification not required). Added ADR-010.
+
+Files created:
+- src/inference/llm_explainer.py
+- tests/ml/test_llm_explainer.py
+
+Files modified:
+- configs/ml_config.json (added llm_explanation config)
+- src/config/ml_config.py (added LLMExplanationConfig and env overrides)
+- src/inference/predictor.py (added predict_with_explanation, explain=True flag)
+- DECISIONS.md (added ADR-010)
+- AGENT_ACTION_LOG.txt (this entry)
+
+Explanation Logic:
+1. Case A (High Risk / Signals >= 50%):
+   Synthesizes visual banding, central eye formation, rotation, and SST/shear conditions
+   to explain why the system reached VERIFIED_CYCLONE, SECONDARY_REVIEW_CONFLICT, or
+   HUMAN_REVIEW_REQUIRED.
+2. Case B (Other Case / Suppressed or Low Risk, Signals < 50%):
+   Identifies which atmospheric barriers (e.g. hostile shear > 20 m/s, dry air RH < 50%,
+   cool SST < 26.5°C, or lack of rotation) suppressed cyclone development and explains
+   why verification was not required.
+
+Tests executed:
+- pytest -q (98 passed in 22.36s; 89 existing + 9 new explainer tests)
+- Specific tests for Case A verification explanations, Case B suppressed shear/moisture
+  explanations, fair weather baselines, error fallback, and predictor integration.
+
+Problems found:
+- None. All 98 tests passing cleanly with zero regressions.
+
+Next action:
+Phase 4 ML/DL pipeline, secondary verification gate, and explanation generator are complete.
+--------------------------------
+
