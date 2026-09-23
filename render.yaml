@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: cyclosense-backend
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: "pip install --upgrade pip && pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu && pip install -r requirements.txt"
+    startCommand: "python -m uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT"
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: CYCLOSENSE_CORS_ORIGINS
+        value: "http://localhost:3000,http://localhost:5173,https://localhost"
+      - key: GROQ_API_KEY
+        sync: false

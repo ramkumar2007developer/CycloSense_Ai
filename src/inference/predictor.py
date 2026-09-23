@@ -89,6 +89,30 @@ class CycloSensePredictor:
         )
 
     @torch.no_grad()
+    def predict_image(self, image_path: Path) -> float:
+        """Run isolated image inference."""
+        image = preprocess_image(image_path, self.transform).unsqueeze(0)
+        img_logits = self.image_model(image)
+        return float(torch.softmax(img_logits, dim=1)[0, 1].item())
+
+    @torch.no_grad()
+    def predict_numerical(self, env_row: pd.Series) -> float:
+        """Run isolated numerical inference."""
+        row_dict = env_row.to_dict() if hasattr(env_row, "to_dict") else dict(env_row)
+        env_df = pd.DataFrame([row_dict])
+        scaled_features = self.num_pipe.transform(env_df)
+        features = torch.tensor(scaled_features, dtype=torch.float32)
+        num_logits = self.num_model(features)
+        return float(torch.softmax(num_logits, dim=1)[0, 1].item())
+
+    @torch.no_grad()
+    def predict_fusion(self, image_path: Path, env_row: pd.Series) -> float:
+        """Run isolated late-fusion inference."""
+        image, features, _ = self._prepare_inputs(image_path, env_row)
+        fusion_logits = self.fusion_model(image, features)
+        return float(torch.softmax(fusion_logits, dim=1)[0, 1].item())
+
+    @torch.no_grad()
     def predict(
         self,
         image_path: Path,

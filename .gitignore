@@ -10,12 +10,9 @@ htmlcov/
 data/raw/
 data/interim/
 data/processed/
-artifacts/
-models/image_model/
-models/numerical_model/
-models/fusion_model/
-*.pt
-*.pth
+artifacts/manifests/
+artifacts/metrics/
 .ipynb_checkpoints/
 .DS_Store
 dataset-main/
+archive/

@@ -52,8 +52,8 @@
     "persistence_weight": 0.05
   },
   "llm_verification": {
-    "enabled": false,
-    "provider": "mock",
+    "enabled": true,
+    "provider": "groq",
     "model_name": "llama-3.2-11b-vision-preview",
     "gate_threshold": 0.50,
     "confidence_threshold": 0.70,
@@ -62,7 +62,7 @@
   },
   "llm_explanation": {
     "enabled": true,
-    "provider": "mock",
+    "provider": "groq",
     "model_name": "llama-3.3-70b-versatile",
     "timeout_seconds": 15,
     "max_retries": 2
