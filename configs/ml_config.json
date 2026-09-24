@@ -1,6 +1,6 @@
 {
   "data_source_tag": "synthetic_mvp",
-  "external_data_root": null,
+  "external_data_root": ".",
   "paths": {
     "insat_image_dir": "archive/insat3d_ir_cyclone_ds/CYCLONE_DATASET_INFRARED",
     "insat_label_csv": "insat_3d_ds - Sheet.csv",
